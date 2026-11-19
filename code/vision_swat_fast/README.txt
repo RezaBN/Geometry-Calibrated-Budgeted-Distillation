@@ -1,4 +1,4 @@
-GCBD VISION SWAT FAST-V1  (2026-11-03)
+GCBD VISION SWAT FAST-V1
 ======================================
 Purpose: optimize how Vision sliced Wasserstein attention transport (SWAT)
 executes, preserving the existing projected weighted-quantile objective.
