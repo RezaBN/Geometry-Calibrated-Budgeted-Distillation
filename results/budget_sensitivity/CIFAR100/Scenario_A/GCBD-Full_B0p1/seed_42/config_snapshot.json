@@ -1,0 +1,184 @@
+{
+  "_config_path": "/scratch/koohi/RBN/code/gcbd_phase2_integrated/vision/vision_experiments_phase2.paper.json",
+  "account": "def-koohi",
+  "dataset_paths": {
+    "CIFAR100": "/scratch/koohi/RBN/data/cifar100",
+    "ImageNet": "/scratch/koohi/RBN/data/imagenet"
+  },
+  "datasets": [
+    "CIFAR100"
+  ],
+  "logs_root": "/scratch/koohi/RBN/logs/vision/paper",
+  "methods": [
+    "Student",
+    "KD",
+    "DKD",
+    "FitNet",
+    "AT",
+    "CRD",
+    "DIST",
+    "ReviewKD",
+    "OTKD",
+    "GCBD-Full"
+  ],
+  "model_assets": {
+    "convnext_base": "/scratch/koohi/RBN/models/pretrained/convnext_base_imagenet1k_v1.pt",
+    "resnet50": "/scratch/koohi/RBN/models/pretrained/resnet50_imagenet1k_v2.pt",
+    "vit_b_16": "/scratch/koohi/RBN/models/pretrained/vit_b_16_imagenet1k_v1.pt"
+  },
+  "output_root": "/scratch/koohi/RBN/results/vision/paper",
+  "project_root": "/scratch/koohi/RBN/code/gcbd_phase2_integrated/vision",
+  "runtime": {
+    "batch_size_rules": [
+      {
+        "batch_size": 64,
+        "mode": "teacher",
+        "scenario": "C"
+      },
+      {
+        "batch_size": 64,
+        "mode": "teacher",
+        "scenario": "D"
+      },
+      {
+        "batch_size": 128,
+        "mode": "method",
+        "scenario": "C"
+      },
+      {
+        "batch_size": 128,
+        "mode": "method",
+        "scenario": "D"
+      }
+    ],
+    "calibration_buffer_capacity": 8192,
+    "calibration_buffer_min_values": 32,
+    "cnn_lr_reference_batch": 256,
+    "cnn_student_lr": 0.1,
+    "deterministic": false,
+    "distillation_weight": 1.0,
+    "ece_bins": 15,
+    "gcbd_budget": 0.3,
+    "gcbd_lambda_broad": 1.0,
+    "gcbd_lambda_budget": 0.1,
+    "gcbd_lambda_uot": 1.0,
+    "gcbd_swd_projections": 16,
+    "gcbd_uot_epsilon": 0.05,
+    "gcbd_uot_iterations": 20,
+    "gcbd_uot_tau_student": 1.0,
+    "gcbd_uot_tau_teacher": 1.0,
+    "gcbd_uot_tolerance": 1e-05,
+    "geometry_cache_num_workers": 8,
+    "geometry_cache_root": "/scratch/koohi/RBN/cache/vision/geometry_phase2",
+    "geometry_cache_train_view": "deterministic_center_crop",
+    "gradient_clip_norm": 5.0,
+    "image_size": 224,
+    "kd_temperature": 4.0,
+    "label_smoothing": 0.0,
+    "method_batch_size": {
+      "CIFAR100": 256,
+      "ImageNet": 256
+    },
+    "method_epochs": {
+      "CIFAR100": 50,
+      "ImageNet": 20
+    },
+    "mixed_precision": "bf16",
+    "momentum": 0.9,
+    "num_workers": 12,
+    "ot_topk_classes": 128,
+    "persistent_workers": true,
+    "pin_memory": true,
+    "prefetch_factor": 2,
+    "progressive_layer_activation_fractions": [
+      0.0,
+      0.33,
+      0.67
+    ],
+    "rho_gate": 0.1,
+    "semantic_class_embeddings_path": {
+      "CIFAR100": "/scratch/koohi/RBN/cache/vision/semantic/cifar100_bert_embeddings.pt",
+      "ImageNet": "/scratch/koohi/RBN/models/semantic/imagenet_class_embeddings.pt"
+    },
+    "semantic_class_manifest_path": {
+      "CIFAR100": "/scratch/koohi/RBN/cache/vision/semantic/cifar100_class_manifest.json",
+      "ImageNet": "/scratch/koohi/RBN/models/semantic/imagenet_class_manifest.json"
+    },
+    "supervised_weight": 1.0,
+    "teacher_batch_size": {
+      "CIFAR100": 128,
+      "ImageNet": 128
+    },
+    "teacher_epochs": {
+      "CIFAR100": 20,
+      "ImageNet": 0
+    },
+    "teacher_lr": {
+      "convnext_base": {
+        "CIFAR100": 0.0001,
+        "ImageNet": 1e-05
+      },
+      "resnet50": {
+        "CIFAR100": 0.01,
+        "ImageNet": 0.001
+      },
+      "vit_b_16": {
+        "CIFAR100": 0.0001,
+        "ImageNet": 1e-05
+      }
+    },
+    "tf32": true,
+    "transformer_lr_reference_batch": 512,
+    "transformer_student_lr": 0.0005,
+    "uot_microbatch_size": 8,
+    "warmup_epochs": 5,
+    "weight_decay_cnn": 0.0005,
+    "weight_decay_transformer": 0.05
+  },
+  "scenarios": [
+    "A",
+    "B",
+    "C",
+    "D"
+  ],
+  "seeds": [
+    18,
+    42,
+    64,
+    94,
+    128,
+    210
+  ],
+  "slurm": {
+    "cpus_per_task": 24,
+    "gpus_per_node": 1,
+    "mail_type": "FAIL",
+    "method_time": {
+      "CIFAR100": "08:00:00",
+      "ImageNet": "24:00:00"
+    },
+    "nodes": 1,
+    "ntasks": 1,
+    "teacher_time": {
+      "CIFAR100": "04:00:00",
+      "ImageNet": "01:00:00"
+    },
+    "time_rules": [
+      {
+        "dataset": "CIFAR100",
+        "mode": "method",
+        "scenario": "C",
+        "time": "02:00:00"
+      },
+      {
+        "dataset": "CIFAR100",
+        "mode": "method",
+        "scenario": "D",
+        "time": "02:00:00"
+      }
+    ]
+  },
+  "teacher_cache_root": "/scratch/koohi/RBN/models/teachers_finetuned/vision",
+  "torch_home": "/scratch/koohi/RBN/cache/vision/torch",
+  "venv": "/scratch/koohi/RBN/envs/vision/venv"
+}
