@@ -1,0 +1,13 @@
+# setup_trillium_vision.sh installs the framework pair first:
+#   torch==2.10.0
+#   torchvision==0.25.0
+#   CUDA wheel family: cu126
+#
+# Student architectures are provided by torchvision/timm and intentionally
+# initialize from scratch in every run; pretrained student weights are not used.
+timm>=1.0.19,<2
+numpy>=1.26,<3
+pandas>=2.2,<3
+scikit-learn>=1.5,<2
+matplotlib>=3.8,<4
+Pillow>=10,<13

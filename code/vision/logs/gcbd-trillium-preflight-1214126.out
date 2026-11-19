@@ -1,0 +1,48 @@
+Host: trig0021
+Job: 1214126
+CPUs: 24
+GPU 0: NVIDIA H100 80GB HBM3 (UUID: GPU-2dce3f9f-854b-3fbe-a407-f4d6f613eaa8)
+Traceback (most recent call last):
+  File "<stdin>", line 4, in <module>
+ModuleNotFoundError: No module named 'gcbd_vision'
+
+scontrol show job 1214126
+JobId=1214126 JobName=gcbd-trillium-preflight
+   UserId=koohi(3162858) GroupId=koohi(3162858) MCS_label=N/A
+   Priority=1592851 Nice=0 Account=def-koohi QOS=normal
+   JobState=COMPLETING Reason=NonZeroExitCode Dependency=(null)
+   Requeue=0 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=1:0
+   RunTime=00:00:17 TimeLimit=00:20:00 TimeMin=N/A
+   SubmitTime=2026-11-01T07:01:03 EligibleTime=2026-11-01T07:01:03
+   AccrueTime=2026-11-01T07:01:03
+   StartTime=2026-11-01T07:01:41 EndTime=2026-11-01T07:01:58 Deadline=N/A
+   SuspendTime=None SecsPreSuspend=0 LastSchedEval=2026-11-01T07:01:41 Scheduler=Backfill
+   Partition=compute AllocNode:Sid=trig-login01:4066912
+   ReqNodeList=(null) ExcNodeList=(null)
+   NodeList=trig0021
+   BatchHost=trig0021
+   NumNodes=1 NumCPUs=24 NumTasks=1 CPUs/Task=24 ReqB:S:C:T=0:0:*:*
+   ReqTRES=cpu=24,mem=187.50G,node=1,billing=1,gres/gpu=1
+   AllocTRES=cpu=24,mem=187.50G,node=1,billing=1,gres/gpu=1
+   Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=*
+   MinCPUsNode=24 MinMemoryNode=187.50G MinTmpDiskNode=0
+   Features=(null) DelayBoot=00:00:00
+   OverSubscribe=OK Contiguous=0 Licenses=(null) LicensesAlloc=(null) Network=(null)
+   Command=/scratch/koohi/RBN/code/vision/trillium_gpu_preflight.sbatch
+   SubmitLine=SBATCH --comment /opt/slurm/bin/sbatch --export=NONE --get-user-env trillium_gpu_preflight.sbatch --export=NONE --get-user-env trillium_gpu_preflight.sbatch
+   WorkDir=/scratch/koohi/RBN/code/vision
+   Comment=/opt/slurm/bin/sbatch --export=NONE --get-user-env trillium_gpu_preflight.sbatch
+   StdErr=
+   StdIn=/dev/null
+   StdOut=/scratch/koohi/RBN/code/vision/logs/gcbd-trillium-preflight-1214126.out
+   TresPerNode=gres/gpu:1
+   TresPerTask=cpu=24
+   MailUser=koohi@scinet.local MailType=FAIL
+
+sacct -j 1214126
+JobID           JobName    Account    Elapsed  MaxVMSize     MaxRSS  SystemCPU    UserCPU ExitCode 
+------------ ---------- ---------- ---------- ---------- ---------- ---------- ---------- -------- 
+1214126      gcbd-tril+  def-koohi   00:00:17                         00:00:00   00:00:00      0:0 
+1214126.bat+      batch  def-koohi   00:00:17                         00:00:00   00:00:00      0:0 
+1214126.ext+     extern  def-koohi   00:00:17                         00:00:00   00:00:00      0:0 
+

@@ -1,0 +1,65 @@
+{
+  "created_utc": "2026-11-02T13:23:58.444422+00:00",
+  "datasets": [
+    {
+      "classes": 100,
+      "dataset": "CIFAR100",
+      "path": "/scratch/koohi/RBN/data/cifar100",
+      "train_examples": 50000,
+      "validation_examples": 10000
+    },
+    {
+      "dataset": "ImageNet",
+      "note": "ImageNet is licensed and is not downloaded by this script.",
+      "path": "/scratch/koohi/RBN/data/imagenet",
+      "status": "not-staged"
+    }
+  ],
+  "models": [
+    {
+      "architecture": "resnet50",
+      "bytes": 102546841,
+      "path": "/scratch/koohi/RBN/models/pretrained/resnet50_imagenet1k_v2.pt",
+      "sha256": "fdbca08710303dced002890f8f71d98b76759f7465ea028a36511bfe7d0ba6a0",
+      "weights_enum": "ResNet50_Weights.IMAGENET1K_V2"
+    },
+    {
+      "architecture": "vit_b_16",
+      "bytes": 346332625,
+      "path": "/scratch/koohi/RBN/models/pretrained/vit_b_16_imagenet1k_v1.pt",
+      "sha256": "0608bf9064c80f17fd100c22b6de0b390095d91e8a69d29bff2534cc43e97029",
+      "weights_enum": "ViT_B_16_Weights.IMAGENET1K_V1"
+    },
+    {
+      "architecture": "convnext_base",
+      "bytes": 354494887,
+      "path": "/scratch/koohi/RBN/models/pretrained/convnext_base_imagenet1k_v1.pt",
+      "sha256": "b059610c8143d25c8df611f4d879de52456567afd46bc8593017ac3e8cf5d500",
+      "weights_enum": "ConvNeXt_Base_Weights.IMAGENET1K_V1"
+    }
+  ],
+  "students": [
+    {
+      "architecture": "deit_tiny_patch16_224",
+      "downloaded_weights": false,
+      "implementation_source": "timm",
+      "initialization": "random per experiment seed",
+      "pretrained": false
+    },
+    {
+      "architecture": "mobilenet_v2",
+      "downloaded_weights": false,
+      "implementation_source": "torchvision",
+      "initialization": "random per experiment seed",
+      "pretrained": false
+    },
+    {
+      "architecture": "resnet18",
+      "downloaded_weights": false,
+      "implementation_source": "torchvision",
+      "initialization": "random per experiment seed",
+      "pretrained": false
+    }
+  ],
+  "torch_version": "2.10.0"
+}

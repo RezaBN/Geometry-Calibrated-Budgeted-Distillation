@@ -1,0 +1,194 @@
+{
+  "config": "/scratch/koohi/RBN/code/nlp/trillium_experiments.json",
+  "datasets": {
+    "IMDb": {
+      "path": "/scratch/koohi/RBN/data/nlp/IMDb",
+      "splits": {
+        "test": {
+          "columns": [
+            "text",
+            "label"
+          ],
+          "fingerprint": "d8785a5a736ac5e4",
+          "rows": 25000
+        },
+        "train": {
+          "columns": [
+            "text",
+            "label"
+          ],
+          "fingerprint": "eaeaf1a8d8361699",
+          "rows": 25000
+        },
+        "unsupervised": {
+          "columns": [
+            "text",
+            "label"
+          ],
+          "fingerprint": "e66a254d09d4e8f1",
+          "rows": 50000
+        }
+      }
+    },
+    "SST-2": {
+      "path": "/scratch/koohi/RBN/data/nlp/SST-2",
+      "splits": {
+        "test": {
+          "columns": [
+            "sentence",
+            "label",
+            "idx"
+          ],
+          "fingerprint": "2411f0a16996556d",
+          "rows": 1821
+        },
+        "train": {
+          "columns": [
+            "sentence",
+            "label",
+            "idx"
+          ],
+          "fingerprint": "80390e8fcfb4f014",
+          "rows": 67349
+        },
+        "validation": {
+          "columns": [
+            "sentence",
+            "label",
+            "idx"
+          ],
+          "fingerprint": "e3182d90fd436f61",
+          "rows": 872
+        }
+      }
+    }
+  },
+  "models": {
+    "bert-base-uncased": {
+      "model_type": "bert",
+      "path": "/scratch/koohi/RBN/models/teachers/bert-base-uncased",
+      "tokenizer_class": "BertTokenizerFast",
+      "verified_loads": {
+        "language_modeling": {
+          "class": "BertForMaskedLM",
+          "objective": "masked",
+          "parameters": 109514298
+        },
+        "sequence_classification": {
+          "class": "BertForSequenceClassification",
+          "parameters": 109483778
+        }
+      },
+      "vocabulary_size": 30522,
+      "weight_files": [
+        "model.safetensors",
+        "pytorch_model.bin"
+      ]
+    },
+    "distilbert-base-uncased": {
+      "model_type": "distilbert",
+      "path": "/scratch/koohi/RBN/models/students/distilbert-base-uncased",
+      "tokenizer_class": "DistilBertTokenizerFast",
+      "verified_loads": {
+        "language_modeling": {
+          "class": "DistilBertForMaskedLM",
+          "objective": "masked",
+          "parameters": 66985530
+        },
+        "sequence_classification": {
+          "class": "DistilBertForSequenceClassification",
+          "parameters": 66955010
+        }
+      },
+      "vocabulary_size": 30522,
+      "weight_files": [
+        "model.safetensors",
+        "pytorch_model.bin"
+      ]
+    },
+    "distilgpt2": {
+      "model_type": "gpt2",
+      "path": "/scratch/koohi/RBN/models/students/distilgpt2",
+      "tokenizer_class": "GPT2TokenizerFast",
+      "verified_loads": {
+        "language_modeling": {
+          "class": "GPT2LMHeadModel",
+          "objective": "causal",
+          "parameters": 81912576
+        },
+        "sequence_classification": {
+          "class": "GPT2ForSequenceClassification",
+          "parameters": 81914112
+        }
+      },
+      "vocabulary_size": 50257,
+      "weight_files": [
+        "model.safetensors",
+        "pytorch_model.bin"
+      ]
+    },
+    "google/bert_uncased_L-4_H-256_A-4": {
+      "model_type": "bert",
+      "path": "/scratch/koohi/RBN/models/students/tinybert-L4-H256",
+      "tokenizer_class": "BertTokenizerFast",
+      "verified_loads": {
+        "language_modeling": {
+          "class": "BertForMaskedLM",
+          "objective": "masked",
+          "parameters": 11201594
+        },
+        "sequence_classification": {
+          "class": "BertForSequenceClassification",
+          "parameters": 11171074
+        }
+      },
+      "vocabulary_size": 30522,
+      "weight_files": [
+        "pytorch_model.bin"
+      ]
+    },
+    "gpt2": {
+      "model_type": "gpt2",
+      "path": "/scratch/koohi/RBN/models/teachers/gpt2",
+      "tokenizer_class": "GPT2TokenizerFast",
+      "verified_loads": {
+        "language_modeling": {
+          "class": "GPT2LMHeadModel",
+          "objective": "causal",
+          "parameters": 124439808
+        },
+        "sequence_classification": {
+          "class": "GPT2ForSequenceClassification",
+          "parameters": 124441344
+        }
+      },
+      "vocabulary_size": 50257,
+      "weight_files": [
+        "model.safetensors",
+        "pytorch_model.bin"
+      ]
+    },
+    "microsoft/deberta-v3-base": {
+      "model_type": "deberta-v2",
+      "path": "/scratch/koohi/RBN/models/teachers/deberta-v3-base",
+      "tokenizer_class": "DebertaV2TokenizerFast",
+      "verified_loads": {
+        "language_modeling": {
+          "class": "DebertaV2ForMaskedLM",
+          "objective": "masked",
+          "parameters": 184551780
+        },
+        "sequence_classification": {
+          "class": "DebertaV2ForSequenceClassification",
+          "parameters": 184423682
+        }
+      },
+      "vocabulary_size": 128001,
+      "weight_files": [
+        "pytorch_model.bin"
+      ]
+    }
+  },
+  "offline_mode": true,
+  "verified_utc": "2026-11-02T14:38:30.293108+00:00"
+}

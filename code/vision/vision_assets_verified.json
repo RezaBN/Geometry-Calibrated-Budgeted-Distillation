@@ -1,0 +1,73 @@
+{
+  "datasets": [
+    {
+      "dataset": "CIFAR100",
+      "first_class": "apple",
+      "last_class": "worm",
+      "num_classes": 100,
+      "root": "/scratch/koohi/RBN/data/cifar100",
+      "sample_labels": [
+        19,
+        49
+      ],
+      "train_examples": 50000,
+      "train_tensor_shape": [
+        3,
+        224,
+        224
+      ],
+      "validation_examples": 10000,
+      "validation_tensor_shape": [
+        3,
+        224,
+        224
+      ]
+    }
+  ],
+  "models": [
+    {
+      "architecture": "convnext_base",
+      "bytes": 354494887,
+      "forward_checked": false,
+      "parameters": 88591464,
+      "path": "/scratch/koohi/RBN/models/pretrained/convnext_base_imagenet1k_v1.pt",
+      "sha256": "b059610c8143d25c8df611f4d879de52456567afd46bc8593017ac3e8cf5d500"
+    },
+    {
+      "architecture": "resnet50",
+      "bytes": 102546841,
+      "forward_checked": false,
+      "parameters": 25557032,
+      "path": "/scratch/koohi/RBN/models/pretrained/resnet50_imagenet1k_v2.pt",
+      "sha256": "fdbca08710303dced002890f8f71d98b76759f7465ea028a36511bfe7d0ba6a0"
+    },
+    {
+      "architecture": "vit_b_16",
+      "bytes": 346332625,
+      "forward_checked": false,
+      "parameters": 86567656,
+      "path": "/scratch/koohi/RBN/models/pretrained/vit_b_16_imagenet1k_v1.pt",
+      "sha256": "0608bf9064c80f17fd100c22b6de0b390095d91e8a69d29bff2534cc43e97029"
+    },
+    {
+      "architecture": "deit_tiny_patch16_224",
+      "parameters": 5717416,
+      "role": "student-architecture"
+    },
+    {
+      "architecture": "mobilenet_v2",
+      "parameters": 3504872,
+      "role": "student-architecture"
+    },
+    {
+      "architecture": "resnet18",
+      "parameters": 11689512,
+      "role": "student-architecture"
+    }
+  ],
+  "python": "3.11.5",
+  "timm": "1.0.30",
+  "torch": "2.10.0",
+  "torchvision": "0.25.0",
+  "verified_utc": "2026-11-02T14:26:31.912484+00:00"
+}

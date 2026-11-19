@@ -1,0 +1,55 @@
+#!/bin/bash
+#SBATCH --account=def-koohi
+#SBATCH --job-name=gcbd-h100
+#SBATCH --nodes=1
+#SBATCH --gpus-per-node=1
+#SBATCH --cpus-per-task=16
+#SBATCH --time=24:00:00
+#SBATCH --output=logs/%x-%j.out
+#SBATCH --mail-type=FAIL
+
+set -euo pipefail
+
+: "${GCBD_PROJECT_ROOT:?Set GCBD_PROJECT_ROOT or submit with submit_trillium.py}"
+: "${GCBD_CONFIG:?Set GCBD_CONFIG or submit with submit_trillium.py}"
+: "${GCBD_VENV:?Set GCBD_VENV or submit with submit_trillium.py}"
+: "${GCBD_HF_HOME:?Set GCBD_HF_HOME or submit with submit_trillium.py}"
+
+module --force purge
+module load StdEnv/2023
+module load gcc/12.3
+module load arrow/25.0.0
+module load cuda/12.6
+module load python/3.11.5
+
+source "$GCBD_VENV/bin/activate"
+
+# Compute nodes have no internet. Assets must be prefetched into this writable
+# scratch cache from an internet-enabled Open OnDemand session.
+export HF_HOME="$GCBD_HF_HOME"
+export HF_HUB_CACHE="$HF_HOME/hub"
+export HF_DATASETS_CACHE="$HF_HOME/datasets"
+export HF_HUB_OFFLINE=1
+export HF_DATASETS_OFFLINE=1
+export TRANSFORMERS_OFFLINE=1
+
+# Prevent libraries from attempting writes to read-only HOME or PROJECT.
+export XDG_CACHE_HOME="$SCRATCH/RBN/cache/nlp/runtime"
+export TORCH_HOME="$XDG_CACHE_HOME/torch"
+export TRITON_CACHE_DIR="$XDG_CACHE_HOME/triton/$SLURM_JOB_ID"
+export TMPDIR="$SLURM_TMPDIR"
+export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
+export TOKENIZERS_PARALLELISM=false
+export PYTHONDONTWRITEBYTECODE=1
+export OMP_NUM_THREADS=8
+
+mkdir -p "$HF_HOME" "$XDG_CACHE_HOME" "$TRITON_CACHE_DIR"
+cd "$GCBD_PROJECT_ROOT"
+
+echo "Host: $(hostname)"
+echo "SLURM job: $SLURM_JOB_ID"
+echo "Python: $(command -v python)"
+python --version
+nvidia-smi
+
+python -u GCBD-NLP_RUN.py --config "$GCBD_CONFIG" "$@"

@@ -1,0 +1,215 @@
+{
+  "protocol_version": "GCBD-revision-2026-11-v1",
+  "seeds": [
+    18,
+    42,
+    64,
+    94,
+    128,
+    210
+  ],
+  "prediction_budgets": [
+    0.1,
+    0.2,
+    0.3,
+    0.5,
+    0.7
+  ],
+  "datasets": {
+    "NLP": [
+      "IMDb",
+      "SST-2"
+    ],
+    "Vision": [
+      "CIFAR100",
+      "ImageNet"
+    ]
+  },
+  "student_epochs": {
+    "NLP_classification": 10,
+    "CIFAR100": 50,
+    "ImageNet": 20
+  },
+  "teacher_epochs": {
+    "NLP_classification": 5,
+    "CIFAR100": 20,
+    "ImageNet": 0
+  },
+  "curriculum": {
+    "gamma_min_ratio_of_logK": 0.2,
+    "gamma_max_ratio_of_logK": 1.0,
+    "frontier_schedule": "cosine",
+    "calibration_buffer_capacity": 8192,
+    "calibration_buffer_min_values": 32,
+    "rho_gate": null,
+    "rho_gate_status": "MUST_BE_LOCKED_BY_PILOT_AND_SENSITIVITY_ANALYSIS"
+  },
+  "geometry": {
+    "nlp_early_layer_depth_fractions": [
+      0.25,
+      0.5,
+      0.75
+    ],
+    "vision_layer_pairs": {
+      "A": [
+        [
+          "resnet50.layer1",
+          "resnet18.layer1"
+        ],
+        [
+          "resnet50.layer2",
+          "resnet18.layer2"
+        ],
+        [
+          "resnet50.layer3",
+          "resnet18.layer3"
+        ]
+      ],
+      "B": [
+        [
+          "resnet50.layer1",
+          "mobilenet_v2.features.3"
+        ],
+        [
+          "resnet50.layer2",
+          "mobilenet_v2.features.6"
+        ],
+        [
+          "resnet50.layer3",
+          "mobilenet_v2.features.13"
+        ]
+      ],
+      "C": [
+        [
+          "vit_b_16.encoder.layers.encoder_layer_2",
+          "deit_tiny_patch16_224.blocks.2"
+        ],
+        [
+          "vit_b_16.encoder.layers.encoder_layer_5",
+          "deit_tiny_patch16_224.blocks.5"
+        ],
+        [
+          "vit_b_16.encoder.layers.encoder_layer_8",
+          "deit_tiny_patch16_224.blocks.8"
+        ]
+      ],
+      "D": [
+        [
+          "convnext_base.features.1",
+          "resnet18.layer1"
+        ],
+        [
+          "convnext_base.features.3",
+          "resnet18.layer2"
+        ],
+        [
+          "convnext_base.features.5",
+          "resnet18.layer3"
+        ]
+      ]
+    },
+    "nlp_support": "normalized_character_offset_centres_from_fast_tokenizers",
+    "vision_support": "normalized_native_spatial_cell_centres; ViT CLS token excluded",
+    "nlp_swat_projections": 8,
+    "vision_swat_projections": 16,
+    "quantile_bins": 128,
+    "progressive_layer_activation_fractions": [
+      0.0,
+      0.33,
+      0.67
+    ],
+    "activation_schedule_status": "PROVISIONAL_REQUIRES_SENSITIVITY_CHECK"
+  },
+  "transport": {
+    "epsilon": 0.05,
+    "rho_teacher": 1.0,
+    "rho_student": 1.0,
+    "iterations_max": 100,
+    "convergence_tolerance": 1e-05,
+    "class_embedding_encoder": "sentence-transformers/all-MiniLM-L6-v2",
+    "class_embedding_dimension": 384,
+    "class_text_template_vision": "a photo of {class_name}.",
+    "class_text_template_nlp": "the sentiment is {class_name}.",
+    "class_embedding_status": "REQUIRES_LOCAL_CHECKPOINT_AND_VERIFIED_CLASS_TEXTS",
+    "imagenet_support": "all_1000_classes_exact_support; queried-example_microbatching; no_other_bin"
+  },
+  "loss_weights": {
+    "NLP": {
+      "alpha_uot": 1.0,
+      "beta_feature": 0.25,
+      "gamma_budget": 0.05,
+      "temperature": 4.0
+    },
+    "Vision": {
+      "alpha_uot": 1.0,
+      "beta_feature": 1.0,
+      "gamma_budget": 0.1,
+      "temperature": 4.0
+    }
+  },
+  "required_before_confirmatory_runs": [
+    "verify all teacher/student checkpoints and teacher validation accuracy",
+    "verify exact data split manifests and sample IDs",
+    "lock class text file and local frozen encoder checkpoint",
+    "lock rho_gate and progressive activation schedule after pilot sensitivity",
+    "validate cached geometry against online geometry on a fixed sample subset",
+    "validate one complete train step per NLP and Vision architecture",
+    "validate actual cache hit rate and teacher invocation ledger",
+    "lock ImageNet epoch protocol and all method-matched schedules"
+  ],
+  "scenario_matrix": {
+    "NLP": [
+      "Setup_1_BERT_TinyBERT",
+      "Setup_2_DeBERTa_DistilBERT",
+      "Setup_3_GPT2_DistilGPT2",
+      "Setup_4_BERT_DistilGPT2",
+      "Setup_5_GPT2_DistilBERT"
+    ],
+    "Vision": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "total_dataset_specific_configurations": 18
+  },
+  "evaluation_design": {
+    "primary_budget_sweep_datasets": [
+      "IMDb",
+      "CIFAR100"
+    ],
+    "confirmatory_budget": 0.3,
+    "selection_controls": [
+      "GCBD_curriculum",
+      "random_matched_rate",
+      "entropy_only_matched_rate",
+      "selection_based_KD",
+      "GCBD_full_access"
+    ],
+    "oracle_difficulty": "offline_diagnostic_only_not_budget_compliant",
+    "transport_controls": [
+      "forward_KL",
+      "balanced_entropic_OT",
+      "semantic_UOT",
+      "nonsemantic_cost_UOT"
+    ],
+    "geometry_controls": [
+      "cached_SWAT",
+      "AT_only",
+      "no_geometry",
+      "linear_CKA"
+    ],
+    "primary_metrics": [
+      "top1_accuracy",
+      "macro_F1",
+      "NLL",
+      "ECE"
+    ],
+    "inference": [
+      "paired_seed_tests",
+      "paired_bootstrap_95CI",
+      "Cohens_dz",
+      "noninferiority_if_margin_preregistered"
+    ]
+  }
+}

@@ -1,0 +1,22 @@
+#!/bin/bash
+#SBATCH --job-name=SWAT-FAST-VERIFY
+#SBATCH --account=def-koohi
+#SBATCH --partition=compute
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --gpus-per-node=1
+#SBATCH --cpus-per-task=4
+#SBATCH --time=00:10:00
+set -euo pipefail
+export GCBD_HOME=/scratch/koohi/RBN
+export PH2="$GCBD_HOME/code/gcbd_phase2_integrated"
+module --force purge
+module load StdEnv/2023
+module load gcc/12.3
+module load cuda/12.6
+module load python/3.11.5
+source "$GCBD_HOME/envs/vision/venv/bin/activate"
+export PYTHONPATH="$PH2/vision:$PH2${PYTHONPATH:+:$PYTHONPATH}"
+HERE="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+python "$HERE/verify_fast_swat.py" --device cuda
+python "$HERE/benchmark_vision_swat.py" --device cuda --images 8 --side 56 --projections 8

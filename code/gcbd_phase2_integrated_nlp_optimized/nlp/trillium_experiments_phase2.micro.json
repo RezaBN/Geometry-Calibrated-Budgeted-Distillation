@@ -1,0 +1,171 @@
+{
+  "account": "def-koohi",
+  "project_root": "/scratch/koohi/RBN/code/gcbd_phase2_integrated/nlp",
+  "venv": "/scratch/koohi/RBN/envs/nlp/venv",
+  "hf_home": "/scratch/koohi/RBN/cache/nlp/downloads",
+  "output_root": "/scratch/koohi/RBN/results/smoke/nlp/micro",
+  "logs_root": "/scratch/koohi/RBN/logs/smoke/nlp/micro",
+  "teacher_cache_root": "/scratch/koohi/RBN/models/smoke/teachers/nlp",
+  "model_paths": {
+    "bert-base-uncased": "/scratch/koohi/RBN/models/teachers/bert-base-uncased",
+    "microsoft/deberta-v3-base": "/scratch/koohi/RBN/models/teachers/deberta-v3-base",
+    "gpt2": "/scratch/koohi/RBN/models/teachers/gpt2",
+    "google/bert_uncased_L-4_H-256_A-4": "/scratch/koohi/RBN/models/students/tinybert-L4-H256",
+    "distilbert-base-uncased": "/scratch/koohi/RBN/models/students/distilbert-base-uncased",
+    "distilgpt2": "/scratch/koohi/RBN/models/students/distilgpt2"
+  },
+  "dataset_paths": {
+    "SST-2": "/scratch/koohi/RBN/data/nlp/SST-2",
+    "IMDb": "/scratch/koohi/RBN/data/nlp/IMDb",
+    "DBPedia": "/scratch/koohi/RBN/datasets/DBPedia",
+    "WikiText-2": "/scratch/koohi/RBN/datasets/WikiText-2"
+  },
+  "sbatch_script": "/scratch/koohi/RBN/code/gcbd_phase2_integrated/nlp/trillium_h100_phase2.sbatch",
+  "prefetch": {
+    "datasets": [
+      "SST-2",
+      "IMDb",
+      "DBPedia",
+      "WikiText-2"
+    ],
+    "scenarios": [
+      "Setup_1_BERT_TinyBERT",
+      "Setup_2_DeBERTa_DistilBERT",
+      "Setup_3_GPT2_DistilGPT2",
+      "Setup_4_BERT_DistilGPT2",
+      "Setup_5_GPT2_DistilBERT"
+    ]
+  },
+  "datasets": [
+    "IMDb",
+    "SST-2"
+  ],
+  "scenarios": [
+    "Setup_1_BERT_TinyBERT",
+    "Setup_2_DeBERTa_DistilBERT",
+    "Setup_3_GPT2_DistilGPT2",
+    "Setup_4_BERT_DistilGPT2",
+    "Setup_5_GPT2_DistilBERT"
+  ],
+  "methods": [
+    "Student",
+    "KD",
+    "FitNet",
+    "PKD",
+    "RKD",
+    "CRD",
+    "MiniLM",
+    "TinyBERT",
+    "DKD",
+    "DIST",
+    "GCBD-Full",
+    "GCBD-NoCurriculum",
+    "GCBD-NoBudget",
+    "GCBD-NoStage1",
+    "GCBD-NoUOT"
+  ],
+  "seeds": [
+    18,
+    42,
+    64,
+    94,
+    128,
+    210
+  ],
+  "budgets": [
+    0.3
+  ],
+  "slurm": {
+    "teacher_time": "02:00:00",
+    "method_time": "01:00:00",
+    "method_time_rules": [
+      {
+        "dataset": "IMDb",
+        "time": "00:20:00"
+      },
+      {
+        "dataset": "SST-2",
+        "time": "00:30:00"
+      }
+    ],
+    "max_jobs_per_submission": 450
+  },
+  "runtime": {
+    "max_length_cls": 256,
+    "max_length_lm": 256,
+    "train_batch_size_cls": 32,
+    "eval_batch_size_cls": 64,
+    "train_batch_size_lm": 16,
+    "eval_batch_size_lm": 32,
+    "epochs_cls": 3,
+    "epochs_lm": 3,
+    "teacher_epochs_cls": 1,
+    "teacher_epochs_lm": 3,
+    "gradient_accumulation_steps": 2,
+    "mixed_precision": "bf16",
+    "allow_tf32": true,
+    "num_workers": 8,
+    "pin_memory": true,
+    "persistent_workers": true,
+    "prefetch_factor": 2,
+    "generate_evaluation_plots": false,
+    "calibration_bins": 15,
+    "report_max_examples": 2000,
+    "report_tsne_max_points": 1000,
+    "report_max_lm_tokens": 10000,
+    "report_lm_confusion_top_tokens": 20,
+    "report_max_weight_values": 1000000,
+    "report_seed": 42,
+    "learning_rate_student": 2e-05,
+    "learning_rate_teacher": 2e-05,
+    "weight_decay": 0.01,
+    "warmup_ratio": 0.06,
+    "max_train_samples": {
+      "SST-2": 512,
+      "IMDb": null,
+      "DBPedia": 50000,
+      "WikiText-2": 50000
+    },
+    "max_eval_samples": {
+      "SST-2": 128,
+      "IMDb": null,
+      "DBPedia": 10000,
+      "WikiText-2": 5000
+    },
+    "rho_gate": 0.1,
+    "calibration_buffer_capacity": 8192,
+    "calibration_buffer_min_values": 32,
+    "progressive_layer_activation_fractions": [
+      0.0,
+      0.33,
+      0.67
+    ],
+    "gcbd_swd_projections": 8,
+    "uot_microbatch_size": 8,
+    "semantic_class_embeddings_path": {
+      "SST-2": "/scratch/koohi/RBN/cache/nlp/semantic/sst2_bert_embeddings.pt"
+    },
+    "semantic_class_names": {
+      "SST-2": [
+        "negative",
+        "positive"
+      ]
+    },
+    "teacher_cache_root": "/scratch/koohi/RBN/models/smoke/teachers/nlp",
+    "output_root": "/scratch/koohi/RBN/results/smoke/nlp/micro",
+    "geometry_cache_root": "/scratch/koohi/RBN/cache/nlp/micro_geometry",
+    "require_finetuned_teacher": true,
+    "train_teacher_if_missing": false,
+    "reuse_finetuned_teacher": true
+  },
+  "geometry_cache_root": "/scratch/koohi/RBN/cache/nlp/micro_geometry",
+  "semantic_class_embeddings_path": {
+    "SST-2": "/scratch/koohi/RBN/cache/nlp/semantic/sst2_bert_embeddings.pt"
+  },
+  "semantic_class_names": {
+    "SST-2": [
+      "negative",
+      "positive"
+    ]
+  }
+}

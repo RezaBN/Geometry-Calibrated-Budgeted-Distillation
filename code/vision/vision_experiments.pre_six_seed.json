@@ -1,0 +1,163 @@
+{
+  "project_root": "/scratch/koohi/RBN/code/vision",
+  "venv": "/scratch/koohi/RBN/envs/vision/venv",
+  "torch_home": "/scratch/koohi/RBN/cache/vision/torch",
+  "dataset_paths": {
+    "CIFAR100": "/scratch/koohi/RBN/data/cifar100",
+    "ImageNet": "/scratch/koohi/RBN/data/imagenet"
+  },
+  "model_assets": {
+    "resnet50": "/scratch/koohi/RBN/models/pretrained/resnet50_imagenet1k_v2.pt",
+    "vit_b_16": "/scratch/koohi/RBN/models/pretrained/vit_b_16_imagenet1k_v1.pt",
+    "convnext_base": "/scratch/koohi/RBN/models/pretrained/convnext_base_imagenet1k_v1.pt"
+  },
+  "teacher_cache_root": "/scratch/koohi/RBN/models/teachers_finetuned/vision",
+  "output_root": "/scratch/koohi/RBN/results/vision",
+  "logs_root": "/scratch/koohi/RBN/logs/vision",
+  "account": "def-koohi",
+  "datasets": [
+    "CIFAR100",
+    "ImageNet"
+  ],
+  "scenarios": [
+    "A",
+    "B",
+    "C",
+    "D"
+  ],
+  "methods": [
+    "Student",
+    "KD",
+    "FitNet",
+    "AT",
+    "CRD",
+    "DKD",
+    "ReviewKD",
+    "DIST",
+    "OTKD",
+    "GCBD-Full",
+    "GCBD-NoCurriculum",
+    "GCBD-NoBudget",
+    "GCBD-NoStage1",
+    "GCBD-NoUOT"
+  ],
+  "seeds": [
+    18,
+    42
+  ],
+  "runtime": {
+    "image_size": 224,
+    "num_workers": 20,
+    "persistent_workers": true,
+    "pin_memory": true,
+    "prefetch_factor": 2,
+    "mixed_precision": "bf16",
+    "tf32": true,
+    "deterministic": false,
+    "teacher_epochs": {
+      "CIFAR100": 20,
+      "ImageNet": 0
+    },
+    "method_epochs": {
+      "CIFAR100": 100,
+      "ImageNet": 100
+    },
+    "teacher_batch_size": {
+      "CIFAR100": 128,
+      "ImageNet": 128
+    },
+    "method_batch_size": {
+      "CIFAR100": 256,
+      "ImageNet": 256
+    },
+    "batch_size_rules": [
+      {
+        "mode": "teacher",
+        "scenario": "C",
+        "batch_size": 64
+      },
+      {
+        "mode": "teacher",
+        "scenario": "D",
+        "batch_size": 64
+      },
+      {
+        "mode": "method",
+        "scenario": "C",
+        "batch_size": 128
+      },
+      {
+        "mode": "method",
+        "scenario": "D",
+        "batch_size": 128
+      }
+    ],
+    "teacher_lr": {
+      "resnet50": {
+        "CIFAR100": 0.01,
+        "ImageNet": 0.001
+      },
+      "vit_b_16": {
+        "CIFAR100": 0.0001,
+        "ImageNet": 1e-05
+      },
+      "convnext_base": {
+        "CIFAR100": 0.0001,
+        "ImageNet": 1e-05
+      }
+    },
+    "cnn_student_lr": 0.1,
+    "cnn_lr_reference_batch": 256,
+    "transformer_student_lr": 0.0005,
+    "transformer_lr_reference_batch": 512,
+    "weight_decay_cnn": 0.0005,
+    "weight_decay_transformer": 0.05,
+    "momentum": 0.9,
+    "warmup_epochs": 5,
+    "label_smoothing": 0.0,
+    "kd_temperature": 4.0,
+    "supervised_weight": 1.0,
+    "distillation_weight": 1.0,
+    "gcbd_budget": 0.3,
+    "gcbd_lambda_broad": 1.0,
+    "gcbd_lambda_uot": 1.0,
+    "gcbd_lambda_budget": 0.1,
+    "gcbd_uot_epsilon": 0.05,
+    "gcbd_uot_iterations": 20,
+    "gcbd_uot_tau_teacher": 1.0,
+    "gcbd_uot_tau_student": 1.0,
+    "ot_topk_classes": 128,
+    "gcbd_swd_projections": 16,
+    "gradient_clip_norm": 5.0,
+    "ece_bins": 15
+  },
+  "slurm": {
+    "nodes": 1,
+    "ntasks": 1,
+    "cpus_per_task": 24,
+    "gpus_per_node": 1,
+    "teacher_time": {
+      "CIFAR100": "04:00:00",
+      "ImageNet": "01:00:00"
+    },
+    "method_time": {
+      "CIFAR100": "08:00:00",
+      "ImageNet": "24:00:00"
+    },
+    "time_rules": [
+      {
+        "mode": "method",
+        "dataset": "CIFAR100",
+        "scenario": "C",
+        "time": "02:00:00"
+      },
+      {
+        "mode": "method",
+        "dataset": "CIFAR100",
+        "scenario": "D",
+        "time": "02:00:00"
+      }
+    ],
+    "mail_type": "FAIL"
+  }
+}
