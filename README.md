@@ -4,6 +4,8 @@
 
 GCBD is a two-stage, gray-box knowledge-distillation framework that combines reusable teacher-geometry representations, sliced-Wasserstein attention alignment (SWAT), uncertainty-guided teacher-query selection, and semantic unbalanced optimal transport (UOT). It investigates how compact students can learn with fewer **online teacher-prediction queries** across natural language processing and computer vision tasks.
 
+**Note.** ***The repository will be updated by code scripts and additional materials after acceptance.***
+
 ## Repository contents
 
 | Directory | Contents |
